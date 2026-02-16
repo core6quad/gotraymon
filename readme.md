@@ -12,4 +12,4 @@ On windows: use the batch file, it automatically builds with a flag
 to disable the console window.
 
 On Linux OR MacOS: `go build .`
-
+i don't think that linux will work.
