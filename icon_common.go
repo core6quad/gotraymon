@@ -29,3 +29,32 @@ func drawBaseIcon(text string) *image.RGBA {
 
 	return img
 }
+
+func drawBaseIconWithPercent(text string) *image.RGBA {
+	img := image.NewRGBA(image.Rect(0, 0, 16, 16))
+
+	draw.Draw(img, img.Bounds(), &image.Uniform{color.Transparent}, image.Point{}, draw.Src)
+
+	d := &font.Drawer{
+		Dst:  img,
+		Src:  &image.Uniform{C: TextColor},
+		Face: basicfont.Face7x13,
+	}
+
+	textWidth := d.MeasureString(text).Round()
+	x := (16 - textWidth) / 2
+	d.Dot = fixed.P(x, 12)
+	d.DrawString(text)
+
+	// Draw small '%' in bottom-right corner
+	percentDrawer := &font.Drawer{
+		Dst:  img,
+		Src:  &image.Uniform{C: TextColor},
+		Face: basicfont.Face7x13,
+	}
+
+	percentDrawer.Dot = fixed.P(12, 15) // x,y position near bottomright
+	percentDrawer.DrawString("%")
+
+	return img
+}
