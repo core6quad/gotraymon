@@ -17,7 +17,7 @@ func drawBaseIcon(text string) *image.RGBA {
 
 	d := &font.Drawer{
 		Dst:  img,
-		Src:  image.Black,
+		Src:  &image.Uniform{C: TextColor},
 		Face: basicfont.Face7x13,
 	}
 

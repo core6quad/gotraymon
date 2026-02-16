@@ -1,6 +1,8 @@
 package main
 
 import (
+	"image"
+	"image/color"
 	"strconv"
 	"time"
 
@@ -8,6 +10,8 @@ import (
 
 	"github.com/shirou/gopsutil/v3/cpu" // only cpu so far
 )
+
+var TextColor color.Color = image.Black
 
 func main() {
 	systray.Run(onReady, onExit)
@@ -18,6 +22,7 @@ func onReady() {
 	//systray.SetTitle(")
 	//systray.SetTooltip("")
 	mQuit := systray.AddMenuItem("Quit", "Quit the whole app")
+	mColor := systray.AddMenuItem("Toggle color", "Change text's color to red or back")
 
 	mQuit.SetTitle("Exit")
 	ticker := time.NewTicker(1 * time.Second)
@@ -33,8 +38,15 @@ func onReady() {
 		select {
 		case <-mQuit.ClickedCh:
 			systray.Quit()
-		}
-	} // jank but future proof
+		case <-mColor.ClickedCh:
+			if TextColor == (color.RGBA{R: 255, G: 0, B: 0, A: 255}) {
+				TextColor = color.RGBA{R: 0, G: 0, B: 0, A: 255}
+			} else {
+				TextColor = color.RGBA{R: 255, G: 0, B: 0, A: 255}
+			}
+
+		} // jank but future proof
+	}
 }
 
 func generateReport() {
